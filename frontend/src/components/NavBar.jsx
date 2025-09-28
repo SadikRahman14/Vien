@@ -9,7 +9,7 @@ const NavBar = () => {
 
   return (
     <div className='flex items-center justify-between py-4 font-medium'>
-          <img src={assets.logo} className='w-36' alt="" />
+         <Link to='/'>  <img  src={assets.logo} className='w-36 cursor-pointer' alt="" /> </Link> 
 
           <ul className='hidden sm:flex gap-10 text-sm text-gray-700'>
               
@@ -58,7 +58,7 @@ const NavBar = () => {
 
           </div>
 
-          <div className={`bg-slate-800 absolute top-0 right-0 bottom-0 overflow-hidden bg-white transition-all ${visible ? 'w-full' : 'w-0'}`}>
+          <div className={`bg-slate-700 absolute top-0 right-0 bottom-0 overflow-hidden transition-all ${visible ? 'w-full' : 'w-0'}`}>
               <div className='flex flex-col text-white'>
                   <div onClick={() => setVisible(false)} className='flex items-center gap-4 p-3'>
                       <img src={assets.dropdown_icon} className='h-4 rotate-180 cursor-pointer' alt="" />
@@ -66,22 +66,22 @@ const NavBar = () => {
                   </div>
                     <NavLink onClick={() => setVisible(false)} className="py-2 pl-6 relative flex flex-col items-start" to="/">
                         <span>H O M E</span>
-                        <hr className="w-8 border-[1.5px] border-black rounded mt-1" />
+                        
                     </NavLink>
 
                     <NavLink onClick={() => setVisible(false)} className="py-2 pl-6 relative flex flex-col items-start" to="/collection">
                         <span>C O L L E C T I O N</span>
-                        <hr className="w-8 border-[1.5px] border-black rounded mt-1" />
+
                     </NavLink>
 
                     <NavLink onClick={() => setVisible(false)} className="py-2 pl-6 relative flex flex-col items-start" to="/about">
                         <span>A B O U T</span>
-                        <hr className="w-8 border-[1.5px] border-black rounded mt-1" />
+
                     </NavLink>
 
                     <NavLink onClick={() => setVisible(false)} className="py-2 pl-6 relative flex flex-col items-start" to="/contact">
                         <span>C O N T A C T</span>
-                        <hr className="w-8 border-[1.5px] border-black rounded mt-1" />
+                      
                     </NavLink>
 
                   
