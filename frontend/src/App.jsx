@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 
 import { ToastContainer, toast } from 'react-toastify';
-
+import ThemeToggle from './components/ThemeToggle';
 
 import Home from './pages/Home'
 import Collection from './pages/Collection'
@@ -35,7 +35,8 @@ const App = () => {
         <Route path='/place-order' element={< PlaceOrders/>} />
         <Route path='/orders' element={ <Orders/> } />
       </Routes>
-      <Footer/>
+      <Footer />
+      <ThemeToggle />
     </div>
   )
 }
