@@ -5,12 +5,12 @@ import { assets } from '../assets/assets'
 
 const Contact = () => {
   return (
-    <div className="bg-white dark:bg-gray-900"> {/* page bg to unify */}
+    <div className="bg-white dark:bg-gray-900">
       <div className='text-center text-3xl pt-10 border-t border-gray-200 dark:border-white/10'>
         <Title txt1={'CONTACT'} txt2={'US'} />
       </div>
 
-      {/* centered card wrapper to lift off the dark page */}
+
       <div className="max-w-6xl mx-auto px-4">
         <div className='my-10 md:my-12 mb-28 rounded-2xl border border-gray-200/80 dark:border-white/10 bg-white dark:bg-gray-800/70 shadow-lg backdrop-blur-[2px]'>
           <div className='flex flex-col justify-center md:flex-row gap-10 p-6 md:p-10'>
