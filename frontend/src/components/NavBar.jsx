@@ -11,23 +11,23 @@ const NavBar = () => {
 
   return (
     <div className='flex items-center justify-between py-4 font-medium'>
-         <Link to='/'>  <img  src={assets.logo} className='w-36 cursor-pointer hover:-rotate-12 transition-all duration-500' alt="" /> </Link> 
+         <Link to='/'>  <img  src={assets.logo} className='w-36 cursor-pointer hover:-rotate-6 transition-all duration-500' alt="" /> </Link> 
 
           <ul className='hidden sm:flex gap-10 text-sm text-gray-700'>
               
-              <NavLink to='/' className=' hover:-rotate-12 transition-all duration-500 flex flex-col items-center gap-1'>
+              <NavLink to='/' className='hover:-rotate-6 transition-all duration-500 flex flex-col items-center gap-1'>
                   <p>H O M E</p>
-                  <hr className= 'hover:-rotate-12 transition-all duration-500 w-2/4 border-none h-[1.5px] bg-gray-700 hidden'/>
+                  <hr className= 'hover:-rotate-6 transition-all duration-500 w-2/4 border-none h-[1.5px] bg-gray-700 hidden'/>
               </NavLink>
-              <NavLink to='/collection' className='hover:-rotate-12 transition-all duration-500 flex flex-col items-center gap-1'>
+              <NavLink to='/collection' className='hover:-rotate-6 transition-all duration-500 flex flex-col items-center gap-1'>
                   <p>C O L L E C T I O N</p>
                   <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden'/>
               </NavLink>
-              <NavLink to='/about' className='hover:-rotate-12 transition-all duration-500 flex flex-col items-center gap-1'>
+              <NavLink to='/about' className='hover:-rotate-6 transition-all duration-500 flex flex-col items-center gap-1'>
                   <p>A B O U T</p>
                   <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden'/>
               </NavLink>
-              <NavLink to='/contact' className='hover:-rotate-12 transition-all duration-500 flex flex-col items-center gap-1'>
+              <NavLink to='/contact' className='hover:-rotate-6 transition-all duration-500 flex flex-col items-center gap-1'>
                   <p>C O N T A C T</p>
                   <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden'/>
               </NavLink>
