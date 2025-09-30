@@ -44,7 +44,7 @@ const NavBar = () => {
                       <div className='flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 dark:bg-gray-800 text-gray-500 dark:text-gray-300 rounded'>
                           <p className='cursor-pointer hover:text-black dark:hover:text-white'> My Profile </p>
                           <p className='cursor-pointer hover:text-black dark:hover:text-white'> Orders </p>
-                          <p className='cursor-pointer hover:text-black dark:hover:text-white'> Logout </p>
+                          <p className='rounded-lg cursor-pointer text-red-600 dark:hover:text-white'> Logout </p>
                       </div>
                   </div>
               </div>
