@@ -3,7 +3,7 @@ import validator from "validator"
 import { ApiError } from "../utils/ApiError.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 import { User } from "../models/user.model.js" 
-
+import jwt from "jsonwebtoken"
 
 const options = {
     httpOnly: true,
@@ -111,6 +111,34 @@ const loginUser = asyncHandler(async (req, res) => {
         )
 })
 
+
+const adminLogin = asyncHandler(async (req, res) => { 
+    const { email, password } = req.body;
+
+    if (!email) {
+        throw new ApiError(400, "Email is Required");
+    }
+
+    if (email !== process.env.ADMIN_EMAIL || password !== process.env.ADMIN_PASSWORD) { 
+        throw new ApiError(401, "Invalid Admin Credentials");
+    }
+
+    const token = jwt.sign(email+password, process.env.ADMIN_TOKEN_SECRET);
+    const adminUser = {
+        name: "Admin",
+        email: process.env.ADMIN_EMAIL
+    }
+
+    return res.status(200)
+        .json(
+            new ApiResponse(
+                200,
+                { user: adminUser, token },
+                "Admin logged in Successfully"
+            )
+        )
+})
+
 const registerUser = asyncHandler(async (req, res) => { 
     const { name, email, password } = req.body;
 
@@ -153,9 +181,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 })
 
-const adminLogin = asyncHandler(async (req, res) => { 
 
-})
 
 
 

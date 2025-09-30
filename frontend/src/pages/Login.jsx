@@ -13,7 +13,7 @@ const Login = () => {
 
   return (
     <form onSubmit={onSubmitHandler} className="flex flex-col items-center w-[90%] sm:max-w-96 m-auto mt-14 gap-4 mb-10 text-gray-700">
-      <div className="text-3xl font-medium">
+      <div className="text-3xl font-medium transition-all duration-500">
         <Title txt1={currentState} />
       </div>
 
@@ -58,7 +58,7 @@ const Login = () => {
           </p>
         )}
       </div>
-      <button className='bg-[#eab3a8] hover:bg-[#fcbfb7]  text-black font-light px-8 py-2 mt-4'> { currentState === 'Login' ? 'L O G I N' : 'S I G N U P'}</button>
+      <button className=' transition-all duration-500 bg-[#07414e] hover:bg-[#0C586A]  text-white font-light px-8 py-2 mt-4'> { currentState === 'Login' ? 'L O G I N' : 'S I G N U P'}</button>
     </form>
   )
 }

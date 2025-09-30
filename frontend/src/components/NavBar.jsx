@@ -17,19 +17,19 @@ const NavBar = () => {
           <ul className='hidden sm:flex gap-10 text-sm text-gray-700 dark:text-gray-300'>
               <NavLink to='/' className='hover:-rotate-6 transition-all duration-500 flex flex-col items-center gap-1'>
                   <p>H O M E</p>
-                  <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 dark:bg-gray-300 hidden'/>
+                  <hr className='w-2/4 border-none h-[1.5px] bg-[#0C586A] dark:bg-gray-300 hidden'/>
               </NavLink>
               <NavLink to='/collection' className='hover:-rotate-6 transition-all duration-500 flex flex-col items-center gap-1'>
                   <p>C O L L E C T I O N</p>
-                  <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 dark:bg-gray-300 hidden'/>
+                  <hr className='w-2/4 border-none h-[1.5px] bg-[#0C586A] dark:bg-gray-300 hidden'/>
               </NavLink>
               <NavLink to='/about' className='hover:-rotate-6 transition-all duration-500 flex flex-col items-center gap-1'>
                   <p>A B O U T</p>
-                  <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 dark:bg-gray-300 hidden'/>
+                  <hr className='w-2/4 border-none h-[1.5px] bg-[#0C586A] dark:bg-gray-300 hidden'/>
               </NavLink>
               <NavLink to='/contact' className='hover:-rotate-6 transition-all duration-500 flex flex-col items-center gap-1'>
                   <p>C O N T A C T</p>
-                  <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 dark:bg-gray-300 hidden'/>
+                  <hr className='w-2/4 border-none h-[1.5px] bg-[#0C586A] dark:bg-gray-300 hidden'/>
               </NavLink>
           </ul>  
 
