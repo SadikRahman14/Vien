@@ -1,86 +1,131 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { ShopContext } from '../context/ShopContext'
+import React, { useContext, useEffect, useState } from 'react';
+import { ShopContext } from '../context/ShopContext';
 import Title from '../components/Title';
 import { assets } from '../assets/assets';
-import CartTotal from '../components/CartTotal'
+import CartTotal from '../components/CartTotal';
 
 const Cart = () => {
-
   const { products, currency, cartItems, updateQuantity, navigate } = useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
 
+  // helper: Cloudinary object/string -> URL
+  const toAbsolute = (v) => {
+    if (!v) return '';
+    if (typeof v === 'object') {
+      const raw = v.secure_url || v.url || v.path || v.location || v.src || '';
+      return toAbsolute(raw);
+    }
+    return String(v);
+  };
+
+  // pick the first image URL from a product (supports images/image)
+  const getFirstImageUrl = (product) => {
+    if (!product) return '';
+    const first =
+      Array.isArray(product.images) ? product.images[0]
+      : Array.isArray(product.image) ? product.image[0]
+      : product.image;
+    return toAbsolute(first);
+  };
 
   useEffect(() => {
-    const tempData = [];
-
-    for (const items in cartItems) {
-      for (const item in cartItems[items]) {
-        if (cartItems[items][item] > 0) {
-          tempData.push({
-            _id: items,
-            size: item,
-            quantity: cartItems[items][item]
-
-          })
+    const temp = [];
+    // cartItems shape: { [productId]: { [size]: qty } }
+    for (const productId in cartItems) {
+      const sizesObj = cartItems[productId] || {};
+      for (const size in sizesObj) {
+        const qty = sizesObj[size];
+        if (qty > 0) {
+          temp.push({ _id: productId, size, quantity: qty });
         }
       }
     }
-
-    setCartData(tempData);
-
-   }, [cartItems])
+    setCartData(temp);
+  }, [cartItems]);
 
   return (
-    <div className='border-t pt-14'>
-      <div className='text-2xl mb-3'>
+    <div className="border-t pt-14">
+      <div className="text-2xl mb-3">
         <Title txt1={'YOUR'} txt2={'CART'} />
       </div>
+
       <div>
-        {
-          cartData.map((item, index) => { 
-            const productData = products.find((product) => product._id === item._id);
-          
-            return(
-              <div key={index} className='py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] items-center gap-4 '>
-                <div className='flex items-start gap-6'>
-                  <img src={productData.image[0]} alt="" className='w-16 sm:w-20' />
-                  <div className=''>
-                    <p className='text-xs sm:text-lg font-medium'>{productData.name}</p>
-                    <div className='flex items-center gap-5 mt-2'>
-                      <p className='px-2 sm:px-3 sm:py-1 border text-white bg-green-500'> {currency}{productData.price}</p>
-                      <p className='px-2 sm:px-3 sm:py-1 border bg-slate-300'> {item.size}</p>
-                    </div>
+        {cartData.map((item, index) => {
+          const productData = (products || []).find(
+            (p) => String(p?._id) === String(item._id)
+          );
+
+          const imageUrl = getFirstImageUrl(productData);
+          const name = productData?.name || 'Product unavailable';
+          const price = productData?.price ?? 0;
+
+          return (
+            <div
+              key={`${item._id}-${item.size}-${index}`}
+              className="py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] items-center gap-4"
+            >
+              <div className="flex items-start gap-6">
+                {imageUrl ? (
+                  <img src={imageUrl} alt={name} className="w-16 sm:w-20 object-cover" />
+                ) : (
+                  <div className="w-16 sm:w-20 bg-gray-100 flex items-center justify-center text-[10px] text-gray-400">
+                    no image
+                  </div>
+                )}
+
+                <div>
+                  <p className="text-xs sm:text-lg font-medium">{name}</p>
+                  <div className="flex items-center gap-5 mt-2">
+                    <p className="px-2 sm:px-3 sm:py-1 border text-white bg-green-500">
+                      {currency}{price}
+                    </p>
+                    <p className="px-2 sm:px-3 sm:py-1 border bg-slate-300">{item.size}</p>
                   </div>
                 </div>
-                <input onChange={(e) => e.target.value === '' || e.target.value === '0'
-                  ? null
-                  : updateQuantity(item._id, item.size, Number(e.target.value))}
-                  type="number"
-                  className='border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1'
-                  min={1} defaultValue={item.quantity}
-                />
-                <img src={assets.bin_icon} onClick={() => updateQuantity(item._id, item.size, 0)} className='w-4 mr-4 sm:w-5 cursor-pointer' alt="" />
               </div>
-            )
-          })
-        }
-      </div>
-      
-      {cartData.length > 0 && (
-      <div className="flex justify-end my-20">
-        <div className="w-full sm:w-[450px]">
-            <CartTotal />
-            <div className='w-full text-end'>
-              <button onClick={() => navigate('/place-order')} className='bg-black text-white text-sm my-8 px-8 py-3'> PROCEED TO CHECKOUT </button>
+
+              <input
+                type="number"
+                min={1}
+                className="border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1"
+                value={item.quantity}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  const n = parseInt(val, 10);
+                  if (!Number.isNaN(n) && n > 0) {
+                    updateQuantity(item._id, item.size, n);
+                  }
+                }}
+              />
+
+              <img
+                src={assets.bin_icon}
+                alt="Remove"
+                className="w-4 mr-4 sm:w-5 cursor-pointer"
+                onClick={() => updateQuantity(item._id, item.size, 0)}
+              />
             </div>
-        </div>
+          );
+        })}
       </div>
-    )}
-      
-      
 
+      {cartData.length > 0 && (
+        <div className="flex justify-end my-20">
+          <div className="w-full sm:w-[450px]">
+            <CartTotal />
+            <div className="w-full text-end">
+              <button
+                onClick={() => navigate('/place-order')}
+                className="bg-black text-white text-sm my-8 px-8 py-3"
+              >
+                PROCEED TO CHECKOUT
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default Cart
+export default Cart;

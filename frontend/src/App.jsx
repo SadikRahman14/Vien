@@ -16,11 +16,11 @@ import Orders from './pages/Orders'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import SearchBar from './components/SearchBar'
-
+import Profile from './pages/Profile';
 
 const App = () => {
   return (
-    <div className='px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]'>
+    <div className='bg-gray-100 dark:bg-slate-600 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]'>
       <ToastContainer/>
       <NavBar />
       <SearchBar/>
@@ -32,8 +32,9 @@ const App = () => {
         <Route path='/product/:productId' element={<Product />} />
         <Route path='/cart' element={<Cart />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/place-order' element={< PlaceOrders/>} />
-        <Route path='/orders' element={ <Orders/> } />
+        <Route path='/place-order' element={< PlaceOrders />} />
+        <Route path='/orders' element={<Orders />} />
+        <Route path='/profile' element={<Profile />} />
       </Routes>
       <Footer />
       <ThemeToggle />

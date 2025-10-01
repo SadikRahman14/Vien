@@ -3,10 +3,12 @@ import { assets } from "../assets/assets.js"
 import { NavLink, Link } from 'react-router-dom'
 import { ShopContext } from '../context/ShopContext.jsx';
 
+
 const NavBar = () => {
 
     const [visible, setVisible] = useState(false);
-    const { search, setSearch, showSearch, setShowSearch, getCartCount } = useContext(ShopContext);
+    const { search, setSearch, showSearch, setShowSearch, getCartCount, token, logout } = useContext(ShopContext);
+    
 
   return (
     <div className=' dark:bg-black flex items-center justify-between py-4 font-medium'>
@@ -42,10 +44,20 @@ const NavBar = () => {
                   </Link>
                   <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-4'>
                       <div className='flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 dark:bg-gray-800 text-gray-500 dark:text-gray-300 rounded'>
-                          <p className='cursor-pointer hover:text-black dark:hover:text-white'> My Profile </p>
-                          <p className='cursor-pointer hover:text-black dark:hover:text-white'> Orders </p>
-                          <p className='rounded-lg cursor-pointer text-red-600 dark:hover:text-white'> Logout </p>
-                      </div>
+                          
+                          {
+                              !token ? <NavLink to='/login' className='cursor-pointer hover:text-black dark:hover:text-white'> Login </NavLink> : null
+                          }
+                          {
+                              token ? <NavLink to='/profile' className='cursor-pointer hover:text-black dark:hover:text-white'> My Profile </NavLink> : null
+                          }
+                          {
+                              token ? <p className='cursor-pointer hover:text-black dark:hover:text-white'> Orders </p> : null
+                          }
+                          {
+                              token ? <p onClick={logout} className={`rounded-lg cursor-pointer text-red-600 dark:hover:text-white`}> Logout </p> : null
+                          }
+                      </div> 
                   </div>
               </div>
 

@@ -8,34 +8,49 @@ const BestSeller = () => {
   const [bestSeller, setBestSeller] = useState([]);
 
   useEffect(() => {
+    if (products?.length) {
+      const bestProduct = products.filter((item) => item.bestSeller);
+      setBestSeller(bestProduct.slice(0, 5));
+    }
+  }, [products]);
 
-    const bestProduct = products.filter((item) => item.bestseller);
-    setBestSeller(bestProduct.slice(0, 5));
-
-  }, []);
-
-  console.log(bestSeller)
+  // helper: Cloudinary object → URL
+  const toAbsolute = (v) => {
+    if (!v) return '';
+    if (typeof v === 'object') {
+      const raw = v.secure_url || v.url || v.path || v.location || v.src || '';
+      return toAbsolute(raw);
+    }
+    return String(v);
+  };
 
   return (
     <div className="my-10">
       <div className="text-center py-8 text-3xl">
         <Title txt1="BEST " txt2="SELLERS" />
         <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deleniti,
-          modi? 
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deleniti, modi?
         </p>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        {bestSeller.map((item) => (
-          <ProductItem
-            key={item._id}
-            id={item._id}
-            image={item.image}
-            name={item.name}
-            price={item.price}
-          />
-        ))}
+        {bestSeller.map((item) => {
+          const first =
+            Array.isArray(item.images) ? item.images[0]
+            : Array.isArray(item.image) ? item.image[0]
+            : item.image;
+          const imageUrl = toAbsolute(first);
+
+          return (
+            <ProductItem
+              key={item._id}
+              id={item._id}
+              image={imageUrl}
+              name={item.name}
+              price={item.price}
+            />
+          );
+        })}
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { assets } from '../../src/assets/assets.js'
 import { backend_url } from '../App.jsx';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Add = ({ token }) => {
 
@@ -48,6 +49,20 @@ const onSubmitHandler = async (e) => {
         },
       }
     );
+
+    if (response.data.success) {
+      toast.success("Product added successfully");
+      setName("");
+      setDescription("");
+      setPrice("");
+      setCategory("Men");
+      setSubcategory("Topwear");
+      setSize([]);
+      setBestSeller(false);
+    }
+    else {
+      toast.error(response.data.message);
+    }
 
     console.log(response.data);
 

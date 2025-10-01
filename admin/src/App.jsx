@@ -9,7 +9,7 @@ import Login from './components/Login'
 import { useState } from 'react'
 import { ToastContainer } from 'react-toastify';
 
-
+export const currency = "$";
 export const backend_url = import.meta.env.VITE_BACKEND_URL;
 
 const App = () => {
