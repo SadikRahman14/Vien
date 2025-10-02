@@ -5,10 +5,13 @@ import { assets } from '../assets/assets';
 import CartTotal from '../components/CartTotal';
 
 const Cart = () => {
-  const { products, currency, cartItems, updateQuantity, navigate } = useContext(ShopContext);
+  const { products, currency, cartItems, updateQuantity, navigate, getUserCart } = useContext(ShopContext);
   const [cartData, setCartData] = useState([]);
 
-  // helper: Cloudinary object/string -> URL
+  useEffect(() => {
+    if (getUserCart) getUserCart();
+  }, [getUserCart]);
+
   const toAbsolute = (v) => {
     if (!v) return '';
     if (typeof v === 'object') {
@@ -18,7 +21,6 @@ const Cart = () => {
     return String(v);
   };
 
-  // pick the first image URL from a product (supports images/image)
   const getFirstImageUrl = (product) => {
     if (!product) return '';
     const first =
@@ -28,9 +30,9 @@ const Cart = () => {
     return toAbsolute(first);
   };
 
+  // Transform cartItems into array for rendering
   useEffect(() => {
     const temp = [];
-    // cartItems shape: { [productId]: { [size]: qty } }
     for (const productId in cartItems) {
       const sizesObj = cartItems[productId] || {};
       for (const size in sizesObj) {
@@ -45,11 +47,14 @@ const Cart = () => {
 
   return (
     <div className="border-t pt-14">
-      <div className="text-2xl mb-3">
-        <Title txt1={'YOUR'} txt2={'CART'} />
+      <div className="flex items-center justify-center text-3xl mb-3">
+        {cartData.length === 0
+          ? <Title txt1={'YOUR CART IS'} txt2={'EMPTY'} />
+          : <Title txt1={'REVIEW YOUR'} txt2={'CART'} />
+        }
       </div>
 
-      <div>
+      <div className='mb-10'>
         {cartData.map((item, index) => {
           const productData = (products || []).find(
             (p) => String(p?._id) === String(item._id)

@@ -131,11 +131,15 @@ const logoutUser = asyncHandler(async (req, res) => {
       // remove stored refresh token so it can't be reused
       await User.findByIdAndUpdate(
         decoded?._id,
-        { $unset: { refreshToken: 1 } },   // ✅ UNSET the field
+          {
+              $unset: { refreshToken: 1 },
+              $set: { cartData: {} }
+          },   // ✅ UNSET the field
         { new: false }
-      );
+        );
+        
     } catch {
-      // ignore invalid/expired token; still clear cookies
+     
     }
   }
 

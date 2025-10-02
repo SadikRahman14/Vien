@@ -1,13 +1,13 @@
 // Product.jsx
 import React, { useContext, useEffect, useState } from 'react';
 import { ShopContext } from '../context/ShopContext';
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { assets } from '../assets/assets';
 import RelatedProducts from '../components/RelatedProducts.jsx';
 
 const Product = () => {
   const { productId } = useParams();
-  const { products, currency, addToCart } = useContext(ShopContext);
+  const { products, currency, addToCart, token } = useContext(ShopContext);
 
   const [productData, setProductData] = useState(null);
   const [image, setImage] = useState('');
@@ -110,10 +110,16 @@ const Product = () => {
               ))}
             </div>
           </div>
-
-          <button onClick={handleAddToCart} className='bg-black text-white px-8 py-3 text-sm active:bg-gray-700'>
+          
+          {
+            token ? <button onClick={handleAddToCart} className='bg-black text-white px-8 py-3 text-sm active:bg-gray-700'>
             ADD TO CART
-          </button>
+            </button> :
+              <NavLink to="/login"><button  className='bg-black text-white px-8 py-3 text-sm '>
+                LOGIN  TO  ADD  TO  CART
+              </button></NavLink>
+          }
+
 
           <hr className='mt-8 sm:w-4/5' />
           <div className='text-sm text-gray-500 mt-5 flex flex-col gap-1'>
@@ -124,7 +130,6 @@ const Product = () => {
         </aside>
       </div>
 
-      {/* ... description + RelatedProducts ... */}
       <div className='mt-20'>
         <div className='flex'>
           <b className='border px-5 py-3 text-sm'>Description</b>
