@@ -25,7 +25,7 @@ const orderSchema = new mongoose.Schema({
     status: {
         type: String,
         required: true,
-        drfault: 'Order Placed'
+        default: 'Order Placed'
     },
 
     paymentMethod: {

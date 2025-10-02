@@ -75,8 +75,8 @@ const Reviews = ({ reviews: incoming }) => {
 
         {/* Overall rating row */}
         <div className="mt-4 flex items-center justify-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="text-xl font-bold">4.6</div>
+          <div className="hover:scale-150 flex items-center gap-2">
+            <div className=" text-xl font-bold">4.6</div>
             <div className="flex items-center">{renderStars(5).slice(0, 5)}</div>
           </div>
           <div className="text-sm text-gray-500">•</div>
@@ -88,7 +88,7 @@ const Reviews = ({ reviews: incoming }) => {
       <div className="max-w-6xl mx-auto px-4 flex justify-center items-center">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {reviews.map((r) => (
-            <article key={r.id} className="bg-white hover:scale-105 dark:bg-gray-800 border rounded-lg p-4 shadow-sm">
+            <article key={r.id} className="bg-white hover:scale-105 transition-all duration-300 dark:bg-gray-800 border rounded-lg p-4 shadow-sm">
               <div className="flex items-start gap-3">
                 <div className="w-12 h-12 rounded-full text-white bg-[#0C586A] dark:bg-gray-700 flex items-center justify-center overflow-hidden">
                   {r.avatar ? (

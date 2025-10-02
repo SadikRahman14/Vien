@@ -23,9 +23,9 @@ const Hero = () => {
         </div>
 
         <img
-          src={assets.hero_img}
+          src={assets.pot_hero}
           alt=""
-          className="w-full sm:w-1/2 transition-transform duration-1000 group-hover:-translate-x-full"
+          className="w-full sm:w-2/4 transition-transform duration-1000 group-hover:-translate-x-full"
         />
       </div>
 

@@ -24,7 +24,7 @@ const NavBar = () => {
     return (
         <div className='dark:bg-black flex items-center justify-between py-4 font-medium'>
             <Link to='/'>
-                <img src={assets.vien} className='w-36 cursor-pointer hover:-rotate-6 transition-all duration-500' alt="" />
+                <img src={assets.vien} className='w-36 hover:scale-90 cursor-pointer     transition-all duration-500' alt="" />
             </Link>
 
             <ul className='hidden sm:flex gap-10 text-sm text-gray-700 dark:text-gray-300'>
@@ -41,7 +41,7 @@ const NavBar = () => {
                     {({ isActive }) => (
                         <div className={`hover:-rotate-6 transition-all duration-500 flex flex-col items-center gap-1 ${isActive ? 'text-[#0C586A]' : ''}`}>
                             <p>C O L L E C T I O N</p>
-                            <hr className={`${isActive ? 'w-2/4' : 'w-2/4 hidden'} border-none h-[1.5px] bg-[#0C586A] dark:bg-gray-300`} />
+                            <hr className={`${isActive ? 'w-1/4' : 'w-2/4 hidden'} border-none h-[1.5px] bg-[#0C586A] dark:bg-gray-300`} />
                         </div>
                     )}
                 </NavLink>
@@ -77,7 +77,7 @@ const NavBar = () => {
                         <div className='flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 dark:bg-gray-800 text-gray-500 dark:text-gray-300 rounded'>
                             {!token ? <NavLink to='/login' className='cursor-pointer hover:text-black dark:hover:text-white'> Login </NavLink> : null}
                             {token ? <NavLink to='/profile' className='cursor-pointer hover:text-black dark:hover:text-white'> My Profile </NavLink> : null}
-                            {token ? <p className='cursor-pointer hover:text-black dark:hover:text-white'> Orders </p> : null}
+                            {token ?  <NavLink to='/orders' className='cursor-pointer hover:text-black dark:hover:text-white'> Orders </NavLink> : null}
                             {token ? <p onClick={() => setShowAlert(true)} className='rounded-lg cursor-pointer text-red-600 dark:hover:text-white'> Logout </p> : null}
                         </div>
                     </div>

@@ -14,7 +14,7 @@ const LatestCollection = () => {
     }
   }, [products]);
 
-  // helper to convert Cloudinary object → plain URL
+
   const toAbsolute = (v) => {
     if (!v) return '';
     if (typeof v === 'object') {
