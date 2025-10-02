@@ -35,4 +35,8 @@ Vien is a modern, responsive e-commerce web application designed to provide a se
 - **Authentication:** JWT for user and admin verification  
 
 
-
+## Furure Imporvements
+- Send Email after Order is Confirmed
+- Dark Mode
+- Deploy
+- 
