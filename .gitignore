@@ -31,3 +31,13 @@ coverage/
 # package-lock.json
 # yarn.lock
 # pnpm-lock.yaml
+# All environment variants are private except placeholders
+.env.*
+!.env.example
+
+# Local upload staging (temporary files before Cloudinary upload)
+backend/public/temp/
+backend/uploads/
+
+# Local backup files
+*.bak
