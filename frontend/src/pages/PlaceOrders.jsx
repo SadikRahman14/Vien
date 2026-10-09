@@ -1,17 +1,19 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useMemo, useRef, useState } from 'react';
 import Title from '../components/Title';
 import CartTotal from '../components/CartTotal';
 import { assets } from '../assets/assets';
 import { ShopContext } from '../context/ShopContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import AlertBox from '../components/AlertBox';
+import OrderConfirmationModal from '../components/OrderConfirmationModal';
 
 const PlaceOrders = () => {
   const method = 'cod';
   const [showAlert, setShowAlert] = useState(false);
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+  const pendingOrderRef = useRef(false);
 
-  const { navigate, backend_url, token, cartItems, setCartItems, getCartAmount, delivery_fee, products } = useContext(ShopContext);
+  const { navigate, backend_url, token, cartItems, setCartItems, getCartAmount, delivery_fee, products, currency } = useContext(ShopContext);
   const [formData, setFormData] = useState({
     firstName: '', lastName: '', email: '', street: '', city: '', state: '', zipcode: '', country: '', phone: ''
   });
@@ -21,30 +23,15 @@ const PlaceOrders = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const prepareOrderSummary = () => {
-    const orderItem = [];
-    for (const items in cartItems) {
-      for (const item in cartItems[items]) {
-        if (cartItems[items][item] > 0) {
-          const itemInfo = structuredClone(products.find(p => p._id === items));
-          if (itemInfo) {
-            itemInfo.size = item;
-            itemInfo.quantity = cartItems[items][item];
-            orderItem.push(itemInfo);
-          }
-        }
-      }
-    }
+  // Share the same cart line items between the preview and the order payload.
+  const orderItems = useMemo(() => Object.entries(cartItems || {}).flatMap(([productId, sizes]) => {
+    const product = (products || []).find((entry) => String(entry._id) === String(productId));
+    if (!product) return [];
 
-    let summary = `Delivery Info:\n`;
-    summary += `${formData.firstName} ${formData.lastName}\n${formData.email} \nPhone: ${formData.phone}\n`;
-    summary += `Order Items:\n`;
-    orderItem.forEach(item => {
-      summary += `${item.name} x ${item.quantity} (${item.size}) - $${item.price}\n`;
-    });
-    summary += `\nPayment Method: ${method.toUpperCase()}\nTotal Amount: $${getCartAmount() + delivery_fee}`;
-    return summary;
-  };
+    return Object.entries(sizes || {})
+      .filter(([, quantity]) => Number(quantity) > 0)
+      .map(([size, quantity]) => ({ ...product, size, quantity: Number(quantity) }));
+  }), [cartItems, products]);
 
   const onSubmitHandler = () => {
     if (Object.values(formData).some((value) => !String(value).trim())) {
@@ -58,52 +45,47 @@ const PlaceOrders = () => {
       toast.error('Your cart is empty.');
       return;
     }
+    const lineCount = Object.values(cartItems).reduce(
+      (total, sizes) => total + Object.values(sizes || {}).filter((quantity) => Number(quantity) > 0).length,
+      0
+    );
+    if (orderItems.length !== lineCount) {
+      toast.error('Some products have not loaded. Please refresh and try again.');
+      return;
+    }
     setShowAlert(true);
   };
 
   const confirmOrder = async () => {
-    setShowAlert(false);
+    if (pendingOrderRef.current) return;
+    pendingOrderRef.current = true;
+    setIsPlacingOrder(true);
 
     try {
-      const orderItem = [];
-      for (const items in cartItems) {
-        for (const item in cartItems[items]) {
-          if (cartItems[items][item] > 0) {
-            const itemInfo = structuredClone(products.find(p => p._id === items));
-            if (itemInfo) {
-              itemInfo.size = item;
-              itemInfo.quantity = cartItems[items][item];
-              orderItem.push({ _id: itemInfo._id, size: item, quantity: itemInfo.quantity });
-            }
-          }
-        }
-      }
-
       const orderData = {
         address: formData,
-        items: orderItem,
+        items: orderItems.map(({ _id, size, quantity }) => ({ _id, size, quantity })),
         amount: getCartAmount() + delivery_fee,
       };
 
-      switch (method) {
-        case 'cod': {
-          const response = await axios.post(backend_url + '/api/v1/orders/place-order-cod', orderData, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          if (response.data.success) {
-            setCartItems({});
-            navigate('/orders');
-          } else {
-            toast.error("Order failed. Please try again.");
-          }
-          break;
-        }
-        default:
-          break;
+      const response = await axios.post(backend_url + '/api/v1/orders/place-order-cod', orderData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.data.success) {
+        setShowAlert(false);
+        setCartItems({});
+        toast.success('Order placed successfully!');
+        navigate('/orders');
+      } else {
+        toast.error(response.data.message || 'Order failed. Please try again.');
       }
     } catch (error) {
       console.error(error);
       toast.error(error?.response?.data?.message || 'Order failed. Please try again.');
+    } finally {
+      pendingOrderRef.current = false;
+      setIsPlacingOrder(false);
     }
   };
 
@@ -159,13 +141,16 @@ const PlaceOrders = () => {
         </div>
       </form>
 
-      <AlertBox
+      <OrderConfirmationModal
         show={showAlert}
-        text={prepareOrderSummary()}
+        onClose={() => setShowAlert(false)}
         onConfirm={confirmOrder}
-        onCancel={() => setShowAlert(false)}
-        confirmText="Confirm Order"
-        cancelText="Cancel"
+        isSubmitting={isPlacingOrder}
+        address={formData}
+        items={orderItems}
+        subtotal={getCartAmount()}
+        deliveryFee={delivery_fee}
+        currency={currency}
       />
     </>
   );
