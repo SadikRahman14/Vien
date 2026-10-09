@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import NavBar from './components/NavBar'
 import Sidebar from './components/Sidebar'
-import { Routes, Route, Navigate } from 'react-router-dom
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Add from './pages/Add.jsx'
 import List from './pages/List'
 import Orders from './pages/Orders'
