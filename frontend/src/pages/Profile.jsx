@@ -1,17 +1,9 @@
-
-import React, { useEffect, useMemo, useState, useContext } from "react";
-import axios from "axios";
+import React, { useEffect, useState, useContext } from "react";
 import { ShopContext } from "../context/ShopContext";
 import { Link } from "react-router-dom";
 
 export default function Profile() {
-    const { backend_url, logout, navigate } = useContext(ShopContext);
-    const base = (backend_url || "").replace(/\/$/, "");
-
-    const apiAuth = useMemo(
-        () => axios.create({ baseURL: base, withCredentials: true }),
-        [base]
-    );
+    const { apiAuth, logout, navigate } = useContext(ShopContext);
 
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
