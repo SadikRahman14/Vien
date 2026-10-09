@@ -29,10 +29,10 @@ const LatestCollection = () => {
       <div className="text-center py-8 text-3xl">
         <Title txt1={'LATEST '} txt2={'COLLECTIONS'} />
         <p className="w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Deleniti, modi?
-          Numquam sequi molestias mollitia corrupti doloribus dolore, veniam
-          accusantium fuga, voluptas, quas magni? Eum, voluptate explicabo error
-          tenetur impedit consectetur.
+          Discover a new expression of style with <span className='text-blue-400 font-bold'>Vien</span> , where modern fashion meets everyday elegance.
+          Explore a curated collection of timeless essentials and contemporary trends, designed to complement your individuality.
+          From casual comfort to effortless sophistication, find pieces that make every moment stylish.
+          <span className='text-blue-900 font-bold'>Your style. Your statement. Your Vien.</span>
         </p>
       </div>
 

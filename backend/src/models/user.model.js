@@ -23,7 +23,11 @@ const userSchema = new mongoose.Schema({
     },
     cartData: {
         type: Object,
-        default: {}  
+        default: {}
+    },
+    refreshToken: {
+        type: String,
+        select: false
     }
 })
 

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { assets } from "../assets/assets.js"
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { ShopContext } from '../context/ShopContext.jsx';
 import AlertBox from './AlertBox.jsx';
 
@@ -21,10 +21,17 @@ const NavBar = () => {
         }
     };
 
+    const navigate = useNavigate();
+
+const handleSearch = () => {
+    setShowSearch(true);
+    navigate('/collection');
+};
+
     return (
         <div className='dark:bg-black flex items-center justify-between py-4 font-medium'>
             <Link to='/'>
-                <img src={assets.vien} className='w-36 hover:scale-90 cursor-pointer     transition-all duration-500' alt="" />
+                <img src={assets.vien} className='w-16 hover:scale-90 cursor-pointer     transition-all duration-500' alt="" />
             </Link>
 
             <ul className='hidden sm:flex gap-10 text-sm text-gray-700 dark:text-gray-300'>
@@ -66,7 +73,12 @@ const NavBar = () => {
             </ul>
 
             <div className='flex items-center gap-6'>
-                <img onClick={() => setShowSearch(!showSearch)} src={assets.search_icon} className='w-5 cursor-pointer' alt="" />
+                <img
+    onClick={handleSearch}
+    src={assets.search_icon}
+    className='w-5 cursor-pointer'
+    alt="Search products"
+/>
 
                 <div className='group relative'>
                     <Link to='/login'>

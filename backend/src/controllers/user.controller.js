@@ -34,7 +34,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
     try {
         const decoded = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET);
-        const user = await User.findById(decoded?._id);
+        const user = await User.findById(decoded?._id).select('+refreshToken');
         if (!user) throw new ApiError(401, "Invalid refresh token");
 
         // ensure the token the client sent is the one we last issued
@@ -132,8 +132,7 @@ const logoutUser = asyncHandler(async (req, res) => {
       await User.findByIdAndUpdate(
         decoded?._id,
           {
-              $unset: { refreshToken: 1 },
-              $set: { cartData: {} }
+              $unset: { refreshToken: 1 }
           },   // ✅ UNSET the field
         { new: false }
         );

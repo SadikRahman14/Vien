@@ -3,7 +3,6 @@ import React, { useContext } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import ThemeToggle from './components/ThemeToggle';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import SearchBar from './components/SearchBar';
@@ -22,7 +21,7 @@ import Profile from './pages/Profile';
 
 const App = () => {
   return (
-    <div className='bg-gray-100 dark:bg-slate-600 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]'>
+    <div className='bg-[#FAF9F6] min-h-screen px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]'>
       <ToastContainer />
       <NavBar />
       <SearchBar />
@@ -75,7 +74,6 @@ const App = () => {
       </Routes>
 
       <Footer />
-      <ThemeToggle />
     </div>
   );
 };

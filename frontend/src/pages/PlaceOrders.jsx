@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import AlertBox from '../components/AlertBox';
 
 const PlaceOrders = () => {
-  const [method, setMethod] = useState('cod');
+  const method = 'cod';
   const [showAlert, setShowAlert] = useState(false);
 
   const { navigate, backend_url, token, cartItems, setCartItems, getCartAmount, delivery_fee, products } = useContext(ShopContext);
@@ -46,7 +46,18 @@ const PlaceOrders = () => {
     return summary;
   };
 
-  const onSubmitHandler = async () => {
+  const onSubmitHandler = () => {
+    if (Object.values(formData).some((value) => !String(value).trim())) {
+      toast.error('Complete all delivery information before checkout.');
+      return;
+    }
+    const hasItems = Object.values(cartItems).some((sizes) =>
+      Object.values(sizes || {}).some((quantity) => quantity > 0)
+    );
+    if (!hasItems) {
+      toast.error('Your cart is empty.');
+      return;
+    }
     setShowAlert(true);
   };
 
@@ -62,7 +73,7 @@ const PlaceOrders = () => {
             if (itemInfo) {
               itemInfo.size = item;
               itemInfo.quantity = cartItems[items][item];
-              orderItem.push(itemInfo);
+              orderItem.push({ _id: itemInfo._id, size: item, quantity: itemInfo.quantity });
             }
           }
         }
@@ -92,7 +103,7 @@ const PlaceOrders = () => {
       }
     } catch (error) {
       console.error(error);
-      toast.error("Something went wrong");
+      toast.error(error?.response?.data?.message || 'Order failed. Please try again.');
     }
   };
 
@@ -127,19 +138,20 @@ const PlaceOrders = () => {
           <div className='mt-12'>
             <Title txt1={'PAYMENT'} txt2={'METHOD'} />
             <div className='flex gap-3 flex-col lg:flex-row'>
-              <div onClick={() => setMethod('stripe')} className='flex items-center gap-3 border p-2 px-3 cursor-pointer'>
-                <p className={`min-w-3.5 h-3.5 border rounded-full ${method==='stripe' ? 'bg-green-400':''}`}></p>
-                <img src={ assets.stripe_logo} className='h-5 mx-4' alt="" />
+              <div className='flex items-center gap-3 border p-2 px-3 opacity-50 cursor-not-allowed' aria-disabled="true" title="Unavailable in portfolio demo">
+                <span className='text-xs text-gray-600'>Stripe (unavailable)</span>
+                <img src={assets.stripe_logo} className='h-5 mx-4' alt="" />
               </div>
-              <div onClick={() => setMethod('razorpay')} className='flex items-center gap-3 border p-2 px-3 cursor-pointer'>
-                <p className={`min-w-3.5 h-3.5 border rounded-full ${method==='razorpay' ? 'bg-green-400':''}`}></p>
-                <img src={ assets.razorpay_logo} className='h-5 mx-4' alt="" />
+              <div className='flex items-center gap-3 border p-2 px-3 opacity-50 cursor-not-allowed' aria-disabled="true" title="Unavailable in portfolio demo">
+                <span className='text-xs text-gray-600'>Razorpay (unavailable)</span>
+                <img src={assets.razorpay_logo} className='h-5 mx-4' alt="" />
               </div>
-              <div onClick={() => setMethod('cod')} className='flex items-center gap-3 border p-2 px-3 cursor-pointer'>
+              <div className='flex items-center gap-3 border p-2 px-3'>
                 <p className={`min-w-3.5 h-3.5 border rounded-full ${method==='cod' ? 'bg-green-400':''}`}></p>
                 <p className='text-gray-500 text-sm font-medium mx-4'> CASH ON DELIVERY</p>
               </div>
             </div>
+            <p className='text-xs text-gray-500 mt-2'>Portfolio demo: orders are simulated and will not be fulfilled.</p>
             <div className='w-full text-end'>
               <button type='button' onClick={onSubmitHandler} className='bg-black text-white text-sm my-8 px-8 py-3'> PROCEED TO CHECKOUT </button>
             </div>
